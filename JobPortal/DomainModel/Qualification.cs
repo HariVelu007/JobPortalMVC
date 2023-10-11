@@ -14,5 +14,7 @@ namespace DomainModel
         public int QualificationRefID { get; set; }
         public string QualificationName { get; set; }
         public int CompletedOn { get; set; }
+        public Job Job { get; set; }
+        public JobSeeker JobSeeker { get; set; }
     }
 }

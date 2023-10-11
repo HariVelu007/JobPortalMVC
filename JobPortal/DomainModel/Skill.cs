@@ -13,5 +13,7 @@ namespace DomainModel
         public int ID { get; set; }
         public int SkillRefID { get; set; }
         public string SkillName { get; set; }
+        public Job Job { get; set; }
+        public JobSeeker JobSeeker { get; set; }
     }
 }

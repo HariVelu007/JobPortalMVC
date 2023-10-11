@@ -16,5 +16,6 @@ namespace DomainModel
         public bool Active { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
+        public JobSeeker JobSeeker { get; set; }
     }
 }

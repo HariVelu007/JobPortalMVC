@@ -14,8 +14,9 @@ namespace DomainModel
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public char Gender { get; set; }
-        public List<Qualification> Qualifications { get; set; }
-        public List<Skill> Skills { get; set; }
+        public ICollection<Qualification> Qualifications { get; set; }
+        public ICollection<Skill> Skills { get; set; }
+        public ICollection<JobSeekerCV> JobSeekerCVs { get; set; }
         public int TotalExperience { get; set; }
         public string Address { get; set; }
         public string City { get; set; }

@@ -12,8 +12,8 @@ namespace DomainModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string JobTitle { get; set; }
-        public List<Qualification> Qualifications { get; set; }
-        public List<Skill> Skills { get; set; }
+        public ICollection<Qualification> Qualifications { get; set; }
+        public ICollection<Skill> Skills { get; set; }
         public int Experience { get; set; }
         public int NoOfVaccancy { get; set; }
         public string Detail { get; set; }
