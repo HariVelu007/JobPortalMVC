@@ -1,0 +1,32 @@
+﻿@model JobPortal.Models.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+@{
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid ">
+            <a class="navbar-brand">JOB PORTAL</a>
+            <form asp-action="Login" method="post" class="d-flex">
+                <div class="me-2 p-1">
+                    <input class="form-control" asp-for="UserID" placeholder="User mail">
+                    <span class="text-danger" asp-validation-for="UserID"></span>
+                </div>
+                <div class="p-1">
+                    <input class="form-control" asp-for=Password placeholder="Password">
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>          
+                <div class="p-1">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <a type="button" class="btn btn-success" href='@Url.Action("Register")'>Sign Up</a>
+                </div>
+
+            </form>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-12 text-center">           
+            <img src="~/img/jobportalwallpaper.png" class="img-fluid" style="height:calc(100vh - 100px);" />
+        </div>
+    </div>
+ 
+}
