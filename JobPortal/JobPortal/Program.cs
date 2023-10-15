@@ -1,3 +1,9 @@
+using JobPortal.PortalConfig;
+using Microsoft.EntityFrameworkCore;
+using PoratlServices.Config;
+using PoratlServices.Implementations;
+using PoratlServices.Interfaces;
+
 namespace JobPortal
 {
     public class Program
@@ -8,7 +14,9 @@ namespace JobPortal
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddAutoMapper(typeof(MappingProfiles));
+            builder.Services.AddDbContext<JpContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
+            builder.Services.AddScoped<IAccountService, AccountService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

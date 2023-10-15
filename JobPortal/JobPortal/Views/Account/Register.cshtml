@@ -1,6 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Register";
 }
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid ">
+        <a class="navbar-brand">JOB PORTAL</a>
+        <div class="p-1">
+            <a type="button" class="link-primary" href='@Url.Action("Login")'>Back</a>
+        </div>
+    </div>
+</nav>
 <div class="container p-5 ">
     <div class="card w-100">
         <div class="card-header">
@@ -9,13 +17,39 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6 float-start">
-                    <a href='@Url.Action("UserRegisteration")' >
-                        <img src="~/img/User.png" class="img-thumbnail" />
+                    <a href='@Url.Action("UserRegisteration")' class="text-decoration-none">
+                        <div class="card">
+                            <div class="card-img-top">
+                                <img src="~/img/User.png" class="img-thumbnail w-100" />
+                            </div>
+                            <div class="card-body">
+                                <div class="card-title">
+                                    Job Seeker
+                                </div>
+                                <div class="card-text">
+                                    By Registring as user only if you are a job seeker.
+                                    you can search and apply jobs here
+                                </div>
+                            </div>
+                        </div>
                     </a>
                 </div>
                 <div class="col-6 float-end">
-                    <a href='@Url.Action("EmployerRegisteration")'>
-                        <img src="~/img/company.png" class="img-thumbnail" />
+                    <a href='@Url.Action("EmployerRegisteration")' class="text-decoration-none">
+                        <div class="card">
+                            <div class="card-img-top">
+                                <img src="~/img/company.png" class="img-thumbnail w-100" />
+                            </div>
+                            <div class="card-body">
+                                <div class="card-title">
+                                    Employer
+                                </div>
+                                <div class="card-text">
+                                    By Registring as employer only if you own a company.
+                                    you can search canditates and recruit jobs here
+                                </div>
+                            </div>
+                        </div>
                     </a>
                 </div>
             </div>

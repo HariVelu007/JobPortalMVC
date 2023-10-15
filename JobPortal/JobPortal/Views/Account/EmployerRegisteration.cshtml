@@ -1,5 +1,99 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model JobPortal.Models.Account.EmployerRegViewModel
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid ">
+        <a class="navbar-brand">JOB PORTAL</a>
+        <div class="p-1">
+            <a type="button" class="link-primary" href='@Url.Action("Register")'>Back</a>
+        </div>
+    </div>
+</nav>
+<div class="container ">
+    <form id="frmEmplReg" asp-action="EmployerRegisteration" method="post" enctype="multipart/form-data">
+        <div class="card m-3">
+            <div class="card-header">
+                Employer Registration
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <img id="EmpProf" src="~/img/upload.png" class="img-thumbnail w-100" style="padding:20%" />
+                        <input id="fuLogo" name="fuLogo" type="file" class="form-control" />
+                    </div>
+                    <div class="col" style="height:700px;overflow-y:auto">
+                        <div class="row">
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.CompanyName"></label>
+                                <input class="form-control" asp-for="@Model.CompanyName" />
+                                <span class="text-danger" asp-validation-for="@Model.CompanyName"></span>
+                            </div>
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.ContactPerson"></label>
+                                <input class="form-control" asp-for="@Model.ContactPerson" />
+                                <span class="text-danger" asp-validation-for="@Model.ContactPerson"></span>
+                            </div>
+                        </div>                        
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Address"></label>
+                            <textarea type="text" class="form-control" asp-for="@Model.Address"></textarea>
+                            <span class="text-danger" asp-validation-for="@Model.Address"></span>
+                        </div>
+                        <div class="row">
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.City"></label>
+                                <input class="form-control" asp-for="@Model.City" />
+                                <span class="text-danger" asp-validation-for="@Model.City"></span>
+                            </div>
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.Mobile"></label>
+                                <input class="form-control" asp-for="@Model.Mobile" />
+                                <span class="text-danger" asp-validation-for="@Model.Mobile"></span>
+                            </div>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Detail"></label>
+                            <textarea class="form-control" asp-for="@Model.Detail"></textarea>
+                            <span class="text-danger" asp-validation-for="@Model.Detail"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Type"></label>
+                            <input class="form-control" asp-for="@Model.Type" />
+                            <span class="text-danger" asp-validation-for="@Model.Type"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.EMail"></label>
+                            <input class="form-control" asp-for="@Model.EMail" />
+                            <span class="text-danger" asp-validation-for="@Model.EMail"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Password"></label>
+                            <input class="form-control" asp-for="@Model.Password" />
+                            <span class="text-danger" asp-validation-for="@Model.Password"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.ConfirmPassword"></label>
+                            <input class="form-control" asp-for="@Model.ConfirmPassword" />
+                            <span class="text-danger" asp-validation-for="@Model.ConfirmPassword"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-inline-flex justify-content-end">
+                <button class="btn btn-primary mx-2" type="submit">Register</button>
+                <button id="empRegReset" class="btn btn-success" type="reset">Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('empRegReset').addEventListener('click', function () {        
+        document.getElementById('frmEmplReg').reset();      
+        $('.validation-summary-errors').empty();
+        $('.field-validation-error').empty();
+    });
+    fuLogo.onchange = evt => {
+        const [file] = fuLogo.files
+        if (file) {
+            EmpProf.src = URL.createObjectURL(file)
+        }
+    }
+</script>

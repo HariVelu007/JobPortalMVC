@@ -10,17 +10,12 @@ using Microsoft.Extensions.Configuration;
 namespace PoratlServices.Config
 {
     public class JpContext : DbContext
-    {
-        protected readonly IConfiguration _configuration;
-        public JpContext(IConfiguration configuration)
+    {        
+        public JpContext(DbContextOptions<JpContext> db) : base(db)
         {
-            _configuration = configuration;
+            
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnStr"));            
-        }
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Job>().HasMany(e => e.Qualifications).WithOne(e => e.Job).HasForeignKey(e => e.QualificationRefID);
@@ -28,6 +23,8 @@ namespace PoratlServices.Config
             modelBuilder.Entity<JobSeeker>().HasMany(e => e.Qualifications).WithOne(e => e.JobSeeker).HasForeignKey(e => e.QualificationRefID);
             modelBuilder.Entity<JobSeeker>().HasMany(e => e.Skills).WithOne(e => e.JobSeeker).HasForeignKey(e => e.SkillRefID);
             modelBuilder.Entity<JobSeeker>().HasMany(e => e.JobSeekerCVs).WithOne(e => e.JobSeeker).HasForeignKey(e => e.SeekerRefID);
+            modelBuilder.Entity<User>().HasOne(e => e.Employer).WithOne(e => e.User).HasForeignKey<Employer>(x => x.EMail).HasPrincipalKey<User>(z => z.EMail);
+            modelBuilder.Entity<User>().HasOne(e => e.JobSeeker).WithOne(e => e.User).HasForeignKey<JobSeeker>(x => x.EMail).HasPrincipalKey<User>(z=>z.EMail);
         }
 
         public DbSet<Employer> Employers { get; set; }
@@ -36,5 +33,6 @@ namespace PoratlServices.Config
         public DbSet<JobSeekerCV> JobSeekerCVs { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -21,10 +21,10 @@ namespace DomainModel
         public string Address { get; set; }
         public string City { get; set; }
         public string Mobile { get; set; }
-        public string EMail { get; set; }
-        public string Password { get; set; }
+        public string EMail { get; set; }        
         public string Profile { get; set; }
         public int Status { get; set; }
+        public User User { get; set; }
 
     }
 }
