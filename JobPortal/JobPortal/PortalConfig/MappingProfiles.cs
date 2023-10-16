@@ -9,7 +9,10 @@ namespace JobPortal.PortalConfig
         public MappingProfiles()
         {
             CreateMap<Employer, EmployerRegViewModel>()
+                .ForMember(s=>s.Password, x=>x.MapFrom(t=>t.User.Password))
+                .ForMember(s=>s.EMail,x=>x.MapFrom(t=>t.User.EMail))
                 .ReverseMap();
+            
         }
     }
 }

@@ -19,21 +19,28 @@ namespace JobPortal.Controllers
         }
         [HttpGet]
         public IActionResult Login()
-        {
+        {            
             return View(new LoginViewModel());
         }
         [HttpPost]
-        public IActionResult Login(LoginViewModel loginView)
+        public async Task<IActionResult> Login(LoginViewModel loginView)
         {
             if(!ModelState.IsValid)
             {
                 return View();
             }
-            return View();
+            (bool res, User user)= await _accountService.Login(loginView.UserID, loginView.Password);
+            if(!res)
+            {
+                ModelState.AddModelError("Password","Invalid credentials.");
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public IActionResult Register()
         {
+            TempData["StatusMessage"] = "Employer registered successfully";
             return View();
         }
         [HttpGet]
@@ -44,7 +51,7 @@ namespace JobPortal.Controllers
         [HttpGet]
         public IActionResult EmployerRegisteration()
         {
-            return View();
+            return View(new EmployerRegViewModel());
         }
         [HttpPost]
         public async Task<IActionResult> EmployerRegisteration(EmployerRegViewModel viewModel,IFormFile fuLogo)
@@ -57,12 +64,16 @@ namespace JobPortal.Controllers
             (bool Result,int EmpID)= await _accountService.RegisterEmployer(emp);
             if(fuLogo!= null)
             {
-                var uploadImg = Path.Combine(_webHostEnvironment.WebRootPath, "EmpImages", EmpID.ToString(), fuLogo.FileName);
+                string FolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "EmpImages", EmpID.ToString());
+                if (!Directory.Exists(FolderPath))
+                    Directory.CreateDirectory(FolderPath);
+                var uploadImg = Path.Combine(FolderPath, fuLogo.FileName);
                 using (var stream = new FileStream(uploadImg, FileMode.Create))
                 {
                     await fuLogo.CopyToAsync(stream);
                 }
-                await _accountService.UpdateProfile(uploadImg, EmpID, true);
+                string ActualImgUrl = Path.Combine("~", "EmpImages", EmpID.ToString(), fuLogo.FileName);
+                await _accountService.UpdateProfile(ActualImgUrl, EmpID, true);
 
             }
             TempData["StatusMessage"] = "Employer registered successfully";

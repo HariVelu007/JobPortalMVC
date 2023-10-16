@@ -9,7 +9,7 @@ namespace PoratlServices.Interfaces
 {
     public interface IAccountService
     {
-        Task<User> Login(string UserID, string Password);
+        Task<(bool, User)> Login(string UserID, string Password);
         Task<(bool, int)> RegisterEmployer(Employer employer);
         Task<(bool, int)> RegisterJobSeeker(JobSeeker jobSeeker);
         Task<bool> UpdateProfile(string url, int id, bool IsEmployer);

@@ -17,10 +17,11 @@ namespace PoratlServices.Implementations
         {
             _JpContext = JpContext;
         }
-        public async Task<User> Login(string UserID, string Password)
+        public async Task<(bool,User)> Login(string UserID, string Password)
         {
             User user= await _JpContext.Users.Where(e=>e.EMail.Equals(UserID) && e.Password.Equals(Password)).SingleOrDefaultAsync();
-            return user;
+            bool res= user!=null?true:false;
+            return (res,user);
         }
         public async Task<(bool,int)> RegisterEmployer(Employer employer)
         {            
