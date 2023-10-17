@@ -39,8 +39,7 @@ namespace JobPortal.Controllers
         }
         [HttpGet]
         public IActionResult Register()
-        {
-            TempData["StatusMessage"] = "Employer registered successfully";
+        {            
             return View();
         }
         [HttpGet]
