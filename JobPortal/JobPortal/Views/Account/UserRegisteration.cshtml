@@ -1,1 +1,100 @@
-﻿
+﻿@model JobPortal.Models.Account.JobSeekerRegViewModel
+
+<partial name="_Navigationbar" />
+<div class="container ">
+    <form id="frmEmplReg" asp-action="UserRegisteration" method="post" enctype="multipart/form-data">
+        <div class="card m-3">
+            <div class="card-header">
+                Job Seeker Registration
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <img id="EmpProf" src="~/img/upload.png" class="img-thumbnail w-100" style="padding:20%" />
+                        <input id="fuLogo" name="fuLogo" type="file" class="form-control" />
+                    </div>
+                    <div class="col" style="height:700px;overflow-y:auto">
+                        <div class="row">
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.Name"></label>
+                                <input class="form-control" asp-for="@Model.Name" />
+                                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+                            </div>
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.DateOfBirth"></label>
+                                <input class="form-control" asp-for="@Model.DateOfBirth" />
+                                <span class="text-danger" asp-validation-for="@Model.DateOfBirth"></span>
+                            </div>
+                        </div>
+                        <div class="my-1">
+                            <label class="form-check-label pe-5" asp-for="@Model.Gender"></label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" asp-for="@Model.Gender" id="cbMale" value="M">
+                                <label class="form-check-label" asp-for="@Model.Gender">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" asp-for="@Model.Gender" id="cbFemale" value="F">
+                                <label class="form-check-label" asp-for="@Model.Gender">Female</label>
+                            </div>                           
+                            <span class="text-danger" asp-validation-for="@Model.Gender"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Address"></label>
+                            <textarea type="text" class="form-control" asp-for="@Model.Address"></textarea>
+                            <span class="text-danger" asp-validation-for="@Model.Address"></span>
+                        </div>
+                        <div class="row">
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.City"></label>
+                                <input class="form-control" asp-for="@Model.City" />
+                                <span class="text-danger" asp-validation-for="@Model.City"></span>
+                            </div>
+                            <div class="mb-1 col">
+                                <label class="form-label" asp-for="@Model.Mobile"></label>
+                                <input class="form-control" asp-for="@Model.Mobile" />
+                                <span class="text-danger" asp-validation-for="@Model.Mobile"></span>
+                            </div>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.About"></label>
+                            <textarea class="form-control" asp-for="@Model.About"></textarea>
+                            <span class="text-danger" asp-validation-for="@Model.About"></span>
+                        </div>                     
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.EMail"></label>
+                            <input class="form-control" asp-for="@Model.EMail" />
+                            <span class="text-danger" asp-validation-for="@Model.EMail"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.Password"></label>
+                            <input class="form-control" asp-for="@Model.Password" />
+                            <span class="text-danger" asp-validation-for="@Model.Password"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label" asp-for="@Model.ConfirmPassword"></label>
+                            <input class="form-control" asp-for="@Model.ConfirmPassword" />
+                            <span class="text-danger" asp-validation-for="@Model.ConfirmPassword"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-inline-flex justify-content-end">
+                <button class="btn btn-primary mx-2" type="submit">Register</button>
+                <button id="JobSeekerRegReset" class="btn btn-success" type="reset">Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('JobSeekerRegReset').addEventListener('click', function () {
+        document.getElementById('frmEmplReg').reset();
+        $('.validation-summary-errors').empty();
+        $('.field-validation-error').empty();
+    });
+    fuLogo.onchange = evt => {
+        const [file] = fuLogo.files
+        if (file) {
+            EmpProf.src = URL.createObjectURL(file)
+        }
+    }
+</script>

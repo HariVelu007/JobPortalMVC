@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DomainModel;
 using JobPortal.Models.Account;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using PoratlServices.Interfaces;
+using System.Security.Claims;
 
 namespace JobPortal.Controllers
 {
@@ -35,18 +38,66 @@ namespace JobPortal.Controllers
                 ModelState.AddModelError("Password","Invalid credentials.");
                 return View();
             }
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, user.EMail),                
+                new Claim(ClaimTypes.Role,user.IsEmployer?"Employer":"JobSeeker")                
+            };
+            if(user.IsEmployer)
+                claims.Add(new Claim(ClaimTypes.Name, user.Employer.CompanyName));
+            else
+                claims.Add(new Claim(ClaimTypes.Name, user.JobSeeker.Name));
+     
+            var principal= new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));          
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
+
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult> LogOut()
         {
-            TempData["StatusMessage"] = "Employer registered successfully";
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+        [HttpGet]
+        public IActionResult Register()
+        {            
             return View();
         }
         [HttpGet]
         public IActionResult UserRegisteration()
         {
-            return View();
+            return View(new JobSeekerRegViewModel());
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserRegisteration(JobSeekerRegViewModel viewModel, IFormFile fuLogo)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            JobSeeker seeker = _mapper.Map<JobSeeker>(viewModel);
+            (bool Result, int SeekerID) = await _accountService.RegisterJobSeeker(seeker);
+            if (!Result)
+            {
+                return View();
+            }
+            if (fuLogo != null)
+            {
+                string FolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "SeekerImages", SeekerID.ToString());
+                if (!Directory.Exists(FolderPath))
+                    Directory.CreateDirectory(FolderPath);
+                var uploadImg = Path.Combine(FolderPath, fuLogo.FileName);
+                using (var stream = new FileStream(uploadImg, FileMode.Create))
+                {
+                    await fuLogo.CopyToAsync(stream);
+                }
+                string ActualImgUrl = Path.Combine("SeekerImages", SeekerID.ToString(), fuLogo.FileName).Replace("\\","/");
+                await _accountService.UpdateProfile(ActualImgUrl, SeekerID, false);
+
+            }
+            TempData["StatusMessage"] = "JobSeeker registered successfully";
+            return RedirectToAction("Login");          
         }
         [HttpGet]
         public IActionResult EmployerRegisteration()
@@ -62,6 +113,10 @@ namespace JobPortal.Controllers
             }
             Employer emp = _mapper.Map<Employer>(viewModel);
             (bool Result,int EmpID)= await _accountService.RegisterEmployer(emp);
+            if(!Result)
+            {
+                return View();
+            }
             if(fuLogo!= null)
             {
                 string FolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "EmpImages", EmpID.ToString());
@@ -72,7 +127,7 @@ namespace JobPortal.Controllers
                 {
                     await fuLogo.CopyToAsync(stream);
                 }
-                string ActualImgUrl = Path.Combine("~", "EmpImages", EmpID.ToString(), fuLogo.FileName);
+                string ActualImgUrl = Path.Combine("EmpImages", EmpID.ToString(), fuLogo.FileName).Replace("\\", "/");
                 await _accountService.UpdateProfile(ActualImgUrl, EmpID, true);
 
             }

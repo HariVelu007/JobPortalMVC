@@ -19,7 +19,9 @@ namespace PoratlServices.Implementations
         }
         public async Task<(bool,User)> Login(string UserID, string Password)
         {
-            User user= await _JpContext.Users.Where(e=>e.EMail.Equals(UserID) && e.Password.Equals(Password)).SingleOrDefaultAsync();
+            User user= await _JpContext.Users.Where(e=>e.EMail.Equals(UserID) && e.Password.Equals(Password))
+                .Include(j => j.JobSeeker)
+                .Include(e => e.Employer).SingleOrDefaultAsync();            
             bool res= user!=null?true:false;
             return (res,user);
         }
@@ -31,7 +33,7 @@ namespace PoratlServices.Implementations
             return (res>0?true:false, employer.ID);
         }
         public async Task<(bool, int)> RegisterJobSeeker(JobSeeker jobSeeker)
-        {
+        {            
             _JpContext.JobSeekers.Add(jobSeeker);
             int res = await _JpContext.SaveChangesAsync();
 
@@ -41,18 +43,26 @@ namespace PoratlServices.Implementations
         {
             if(IsEmployer)
             {
-                Employer emp = await _JpContext.Employers.Where(e => e.ID.Equals(id)).SingleOrDefaultAsync();
+                Employer emp = await _JpContext.Employers
+                    .Where(e => e.ID.Equals(id)).SingleOrDefaultAsync();
                 emp.Logo = url;
                 _JpContext.Employers.Update(emp);
             }
             else
             {
-                JobSeeker seeker = await _JpContext.JobSeekers.Where(e => e.ID.Equals(id)).SingleOrDefaultAsync();
+                JobSeeker seeker = await _JpContext.JobSeekers
+                    .Where(e => e.ID.Equals(id)).SingleOrDefaultAsync();
                 seeker.Profile = url;
                 _JpContext.JobSeekers.Update(seeker);
             }           
 
             return await _JpContext.SaveChangesAsync()>0?true:false;
+        }
+
+        public async Task<JobSeeker> GetUserBasicInfo(string UserID)
+        {
+            JobSeeker seeker = await _JpContext.JobSeekers.Where(u => u.EMail.Equals(UserID)).SingleOrDefaultAsync();
+            return seeker;
         }
     }
 }

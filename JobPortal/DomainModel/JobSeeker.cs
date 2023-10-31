@@ -19,6 +19,7 @@ namespace DomainModel
         public ICollection<JobSeekerCV> JobSeekerCVs { get; set; }
         public int TotalExperience { get; set; }
         public string Address { get; set; }
+        public string About { get; set; }
         public string City { get; set; }
         public string Mobile { get; set; }
         public string EMail { get; set; }        

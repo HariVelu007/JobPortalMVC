@@ -5,7 +5,7 @@
 @{
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid ">
-            <a class="navbar-brand">JOB PORTAL</a>
+            <a class="navbar-brand"><img src="~/img/HRLogo.png"  height="35px" /></a>
             <form asp-action="Login" method="post" class="d-flex">
                 <div class="me-2 p-1">
                     <input class="form-control" asp-for="UserID" placeholder="User mail">
@@ -16,8 +16,8 @@
                     <span class="text-danger" asp-validation-for="Password"></span>
                 </div>
                 <div class="p-1">
-                    <button class="btn btn-primary" type="submit">Login</button>
-                    <a type="button" class="btn btn-success" href='@Url.Action("Register")'>Sign Up</a>
+                    <button class="btn btn-primary bg-gradient" type="submit">Login</button>
+                    <a type="button" class="btn btn-success bg-gradient" href='@Url.Action("Register")'>Sign Up</a>
                 </div>
 
             </form>

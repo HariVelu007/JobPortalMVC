@@ -13,5 +13,6 @@ namespace PoratlServices.Interfaces
         Task<(bool, int)> RegisterEmployer(Employer employer);
         Task<(bool, int)> RegisterJobSeeker(JobSeeker jobSeeker);
         Task<bool> UpdateProfile(string url, int id, bool IsEmployer);
+        Task<JobSeeker> GetUserBasicInfo(string UserID);
     }
 }
